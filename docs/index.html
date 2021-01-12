@@ -1,0 +1,364 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>ycabal-sdk</title>
+	<meta name="description" content="Documentation for ycabal-sdk">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">ycabal-sdk</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1>ycabal-sdk</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#backbone-sdk" id="backbone-sdk" style="color: inherit; text-decoration: none;">
+					<h1>Backbone sdk</h1>
+				</a>
+				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+					<h2>Usage</h2>
+				</a>
+				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+					<h3>Installation</h3>
+				</a>
+				<p><code>npm install ycabal-sdk</code></p>
+				<a href="#quick-start-client" id="quick-start-client" style="color: inherit; text-decoration: none;">
+					<h3>Quick Start (client)</h3>
+				</a>
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> backboneSdk <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ycabal-sdk&#x27;</span>
+<span class="hljs-keyword">import</span> Web3 <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;web3&#x27;</span>
+
+<span class="hljs-keyword">const</span> web3 = <span class="hljs-keyword">new</span> Web3(<span class="hljs-built_in">window</span>.ethereum)
+
+<span class="hljs-comment">// create options object</span>
+<span class="hljs-keyword">const</span> options = {
+  <span class="hljs-attr">dappId</span>: <span class="hljs-string">&#x27;Your dappId here&#x27;</span>,
+  <span class="hljs-attr">networkId</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-attr">transactionHandlers</span>: [<span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(event.transaction)]
+}
+
+<span class="hljs-comment">// initialize and connect to the api</span>
+<span class="hljs-keyword">const</span> backbone = <span class="hljs-keyword">new</span> BackboneSdk(options)
+
+<span class="hljs-comment">// initiate a transaction via web3.js</span>
+web3.eth.sendTransaction(txOptions).on(<span class="hljs-string">&#x27;transactionHash&#x27;</span>, <span class="hljs-function"><span class="hljs-params">hash</span> =&gt;</span> {
+  <span class="hljs-comment">// call with the transaction hash of the transaction that you would like to receive status updates for</span>
+  <span class="hljs-keyword">const</span> { emitter } = backbone.transaction(hash)
+
+  <span class="hljs-comment">// listen to some events</span>
+  emitter.on(<span class="hljs-string">&#x27;txPool&#x27;</span>, <span class="hljs-function"><span class="hljs-params">transaction</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Sending <span class="hljs-subst">${transaction.value}</span> wei to <span class="hljs-subst">${transaction.to}</span>`</span>)
+  })
+
+  emitter.on(<span class="hljs-string">&#x27;txConfirmed&#x27;</span>, <span class="hljs-function"><span class="hljs-params">transaction</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Transaction is confirmed!&#x27;</span>)
+  })
+
+  <span class="hljs-comment">// catch every other event that occurs and log it</span>
+  emitter.on(<span class="hljs-string">&#x27;all&#x27;</span>, <span class="hljs-function"><span class="hljs-params">transaction</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Transaction event: <span class="hljs-subst">${transaction.eventCode}</span>`</span>)
+  })</code></pre>
+				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+					<h2>License</h2>
+				</a>
+				<p>MIT</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="classes/backbone.html" class="tsd-kind-icon">Backbone</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/api.html" class="tsd-kind-icon">API</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ac.html" class="tsd-kind-icon">Ac</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/account.html" class="tsd-kind-icon">Account</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/balancechange.html" class="tsd-kind-icon">Balance<wbr>Change</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/basetransactionlog.html" class="tsd-kind-icon">Base<wbr>Transaction<wbr>Log</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/bitcoinrawtransaction.html" class="tsd-kind-icon">Bitcoin<wbr>Raw<wbr>Transaction</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/bitcointransactiondata.html" class="tsd-kind-icon">Bitcoin<wbr>Transaction<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/bitcointransactionlog.html" class="tsd-kind-icon">Bitcoin<wbr>Transaction<wbr>Log</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/commontransactiondata.html" class="tsd-kind-icon">Common<wbr>Transaction<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/config.html" class="tsd-kind-icon">Config</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/configuration.html" class="tsd-kind-icon">Configuration</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/contractcall.html" class="tsd-kind-icon">Contract<wbr>Call</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/destroy.html" class="tsd-kind-icon">Destroy</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/emitter.html" class="tsd-kind-icon">Emitter</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/emitterlistener.html" class="tsd-kind-icon">Emitter<wbr>Listener</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/enhancedconfig.html" class="tsd-kind-icon">Enhanced<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ethereumtransactiondata.html" class="tsd-kind-icon">Ethereum<wbr>Transaction<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ethereumtransactionlog.html" class="tsd-kind-icon">Ethereum<wbr>Transaction<wbr>Log</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/event.html" class="tsd-kind-icon">Event</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/eventobject.html" class="tsd-kind-icon">Event<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/initializationoptions.html" class="tsd-kind-icon">Initialization<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/inputoutput.html" class="tsd-kind-icon">Input<wbr>Output</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/limitrules.html" class="tsd-kind-icon">Limit<wbr>Rules</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/notificationobject.html" class="tsd-kind-icon">Notification<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/sdkerror.html" class="tsd-kind-icon">SDKError</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/transaction.html" class="tsd-kind-icon">Transaction</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/transactionevent.html" class="tsd-kind-icon">Transaction<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/transactionhandler.html" class="tsd-kind-icon">Transaction<wbr>Handler</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/tx.html" class="tsd-kind-icon">Tx</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/unsubscribe.html" class="tsd-kind-icon">Unsubscribe</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/vin.html" class="tsd-kind-icon">Vin</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/vout.html" class="tsd-kind-icon">Vout</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#network" class="tsd-kind-icon">Network</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#status" class="tsd-kind-icon">Status</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#system" class="tsd-kind-icon">System</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#transactiondata" class="tsd-kind-icon">Transaction<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#transactioneventcode" class="tsd-kind-icon">Transaction<wbr>Event<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#transactioneventlog" class="tsd-kind-icon">Transaction<wbr>Event<wbr>Log</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#default_name" class="tsd-kind-icon">DEFAULT_<wbr>NAME</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#default_system" class="tsd-kind-icon">DEFAULT_<wbr>SYSTEM</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#queue_limit" class="tsd-kind-icon">QUEUE_<wbr>LIMIT</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#account" class="tsd-kind-icon">account</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#configuration" class="tsd-kind-icon">configuration</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#createemitter" class="tsd-kind-icon">create<wbr>Emitter</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#createeventlog" class="tsd-kind-icon">create<wbr>Event<wbr>Log</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#event" class="tsd-kind-icon">event</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#handlemessage" class="tsd-kind-icon">handle<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#invalidparams" class="tsd-kind-icon">invalid<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#isaddress" class="tsd-kind-icon">is<wbr>Address</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#istxid" class="tsd-kind-icon">is<wbr>Txid</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#jsonpreserveundefined" class="tsd-kind-icon">json<wbr>Preserve<wbr>Undefined</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#last" class="tsd-kind-icon">last</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#networkname" class="tsd-kind-icon">network<wbr>Name</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#ondown" class="tsd-kind-icon">on<wbr>Down</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#onopen" class="tsd-kind-icon">on<wbr>Open</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#onreopen" class="tsd-kind-icon">on<wbr>Reopen</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#processqueue" class="tsd-kind-icon">process<wbr>Queue</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#sendmessage" class="tsd-kind-icon">send<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#serverecho" class="tsd-kind-icon">server<wbr>Echo</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#transaction" class="tsd-kind-icon">transaction</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#unsubscribe" class="tsd-kind-icon">unsubscribe</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#validsystem" class="tsd-kind-icon">valid<wbr>System</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#validateoptions" class="tsd-kind-icon">validate<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#validatetype" class="tsd-kind-icon">validate<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#wait" class="tsd-kind-icon">wait</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#waitforconnectionopen" class="tsd-kind-icon">wait<wbr>For<wbr>Connection<wbr>Open</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="globals.html#default_rate_limit_rules" class="tsd-kind-icon">DEFAULT_<wbr>RATE_<wbr>LIMIT_<wbr>RULES</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="globals.html#networks" class="tsd-kind-icon">networks</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
