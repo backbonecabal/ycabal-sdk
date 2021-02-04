@@ -25,7 +25,7 @@
     "prepare": "npm run build"
   },
   "devDependencies": {
-    "@babel/cli": "^7.7.0",
+    "@babel/cli": "^7.12.13",
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@rollup/plugin-commonjs": "^11.0.2",
@@ -46,6 +46,6 @@
   "dependencies": {
     "crypto-es": "^1.2.2",
     "rxjs": "^6.6.3",
-    "sturdy-websocket": "^0.1.12"
+    "sturdy-websocket": "^0.2.1"
   }
 }
