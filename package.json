@@ -30,7 +30,7 @@
     "@babel/preset-env": "^7.5.5",
     "@rollup/plugin-commonjs": "^11.0.2",
     "@rollup/plugin-json": "^4.0.0",
-    "@rollup/plugin-node-resolve": "^11.1.0",
+    "@rollup/plugin-node-resolve": "^11.1.1",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
     "babel-plugin-external-helpers": "^6.18.0",
@@ -46,6 +46,6 @@
   "dependencies": {
     "crypto-es": "^1.2.2",
     "rxjs": "^6.6.3",
-    "sturdy-websocket": "^0.1.12"
+    "sturdy-websocket": "^0.2.1"
   }
 }
