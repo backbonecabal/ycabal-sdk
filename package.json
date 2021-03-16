@@ -1,6 +1,6 @@
 {
   "name": "ycabal-sdk",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "description": "SDK to connect to the backbone backend via a websocket connection",
   "keywords": [
     "ethereum",
@@ -21,9 +21,9 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "rimraf dist && rollup -c && babel dist/esm/index.js -o dist/esm/index.js && babel dist/cjs/index.js -o dist/cjs/index.js",
+    "build": "npx rollup -c && npx babel dist/esm/index.js -o dist/esm/index.js && npx babel dist/cjs/index.js -o dist/cjs/index.js",
     "test": "echo \"TBD\" && exit 0",
-    "prepare": "npm run build"
+    "build:clean": "rm -rf dist/ && rnpx ollup -c && npx babel dist/esm/index.js -o dist/esm/index.js && npx babel dist/cjs/index.js -o dist/cjs/index.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.13",
