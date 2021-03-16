@@ -45,7 +45,7 @@
     "typescript": "^3.6.4"
   },
   "dependencies": {
-    "crypto-es": "^1.2.2",
+    "crypto-es": "^1.2.7",
     "rxjs": "^6.6.3",
     "sturdy-websocket": "^0.2.1"
   }
